@@ -1,14 +1,30 @@
 import keyboard
+import os
+import getpass
 from threading import Thread
 from time import sleep
+import platform
 import json
 
 
+CFG_DIRS = ["config.json"]
+if platform.system() == "Linux":
+    if os.getuid() != 0:
+        # Not su
+        CFG_DIRS.extend([f"/home/{getpass.getuser()}/.keymaer/config.json"])
+    CFG_DIRS.extend(["/etc/keymaer/config.json"])
+
+
 def read_cfg():
-    try:
-        return json.load(open("config.json"))
-    except Exception:
-        return None
+    cfg = None
+    for file in CFG_DIRS:
+        print("Reading config from", file)
+        try:
+            cfg = json.load(open(file=file))
+            break
+        except Exception:
+            continue
+    return cfg
 
 
 def register_key(
@@ -60,7 +76,6 @@ def register_key(
 
 
 def main():
-    print("Reading configuration...")
     cfg = read_cfg()
     delay = cfg["delay"]
     for key in cfg["keys"]:
