@@ -34,43 +34,54 @@ def register_key(
     print(f"Delay {delay_min} / {delay_max}, remove keypress {remove}")
     cur_keys = []
 
+    def counter(key_name):
+        sleep(delay_max)
+        try:
+            cur_keys.remove(key_name)
+        except ValueError:
+            return
+
+    def press_key():
+        keyboard.press(target_key)
+        sleep(0.03)
+        keyboard.release(target_key)
+
     def callback(cur_key):
         if cur_key.event_type != "down":
             return
-        key_name = cur_key.name
+        key_name = cur_key.name or cur_key.scan_code
         if key_name not in trigger:
             return
         cur_keys.append(key_name)
         print(cur_keys, trigger)
         if cur_keys == trigger:
+            keyboard.release(key_name)
             if remove:
                 for _ in trigger:
                     keyboard.press("backspace")
                     keyboard.release("backspace")
-            keyboard.press(target_key)
-            sleep(0.03)
-            keyboard.release(target_key)
+            Thread(target=press_key, daemon=True).start()
             cur_keys.clear()
             return
-        elif len(cur_keys) >= len(trigger):
-            cur_keys.clear()
+        if len(cur_keys) >= len(trigger):
+            for i in range(len(cur_keys) - len(trigger)):
+                cur_keys.pop(i)
             return
+        Thread(target=counter, args=[key_name], daemon=True).start()
 
-        def counter():
-            sleep(delay_max)
-            try:
-                cur_keys.remove(key_name)
-            except ValueError:
-                return
-
-        Thread(target=counter, daemon=True).start()
-
-    def check():
-        print("Check started for key", target_key)
-        while True:
-            cur_key = keyboard.read_event()
-            callback(cur_key)
-            sleep(delay_min)
+    if delay_min > 0:
+        def check():
+            print("Check started with delay min for key", target_key)
+            while True:
+                cur_key = keyboard.read_event()
+                callback(cur_key)
+                sleep(delay_min)
+    else:
+        def check():
+            print("Check started for key", target_key)
+            while True:
+                cur_key = keyboard.read_event()
+                callback(cur_key)
 
     Thread(target=check, daemon=True).start()
 
