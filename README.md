@@ -20,15 +20,15 @@ sudo pip install git+https://github.com/teppyboy/keymaer
 + Install executable (shell script) (optional)
 
 ```bash
-sudo curl -OL <url>
-# PyPy: sudo curl -OL <url>
+sudo curl -OL -o /usr/local/bin/keymaer https://github.com/teppyboy/keymaer/raw/master/misc/keymaer 
+# PyPy: sudo curl -OL -o /usr/local/bin/keymaer https://github.com/teppyboy/keymaer/raw/master/misc/keymaer-pypy
 chmod +x /usr/local/bin/keymaer
 ```
 
 + systemd service (optional)
   
 ```bash
-sudo curl -OL <url>
+sudo curl -OL -o /etc/systemd/system/keymaer.service https://github.com/teppyboy/keymaer/raw/master/misc/keymaer.service
 # sudo systemctl daemon-reload
 # sudo systemctl enable --now keymaer
 ```
