@@ -21,7 +21,7 @@ sudo pip install git+https://github.com/teppyboy/keymaer
 
 ```bash
 sudo curl -L -o /usr/local/bin/keymaer https://github.com/teppyboy/keymaer/raw/master/misc/keymaer 
-# PyPy: sudo curl -OL -o /usr/local/bin/keymaer https://github.com/teppyboy/keymaer/raw/master/misc/keymaer-pypy
+# PyPy: sudo curl -L -o /usr/local/bin/keymaer https://github.com/teppyboy/keymaer/raw/master/misc/keymaer-pypy
 chmod +x /usr/local/bin/keymaer
 ```
 
