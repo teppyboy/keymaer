@@ -1,0 +1,10 @@
+[Unit]
+Description=Keymaer key mapping tool
+Requires=multi-user.target
+
+[Service]
+ExecStart=/usr/local/bin/keymaer
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
