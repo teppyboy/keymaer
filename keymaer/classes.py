@@ -70,9 +70,9 @@ class KeyMap:
             self._pressed_keys.clear()
             return
         if len(self._pressed_keys) >= len(self.trigger_keys):
-            for i in range(len(self._pressed_keys) - len(self.trigger_keys)):
-                self._pressed_keys.pop(i)
-            return
+            for _ in range(len(self._pressed_keys) - len(self.trigger_keys) + 1):
+                self._pressed_keys.pop(0)
+                return
         Thread(target=self._time_counter, args=[key_name], daemon=True).start()
 
     def start_map(self):
@@ -84,7 +84,7 @@ class KeyMap:
                 )
                 while True:
                     key = keyboard.read_event()
-                    self._callback(key)
+                    Thread(target=self._callback, args=[key], daemon=True).start()
                     sleep(self.delay.min)
 
         else:
@@ -93,7 +93,7 @@ class KeyMap:
                 self._logger.debug("Map started for key", self.target_key)
                 while True:
                     key = keyboard.read_event()
-                    self._callback(key)
+                    Thread(target=self._callback, args=[key], daemon=True).start()
 
         Thread(target=check, daemon=True).start()
         self._logger.debug("Check thread started.")
