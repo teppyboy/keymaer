@@ -6,6 +6,7 @@ import json
 from keymaer.engine import Delay, KeyMap
 from keymaer.utils import setup_logging
 from pathlib import Path
+from sys import argv
 
 CFG_DIRS = [
     "config.json",
@@ -45,6 +46,14 @@ def fix_key_trigger(key_list: list[str]) -> list[str]:
 
 def main():
     setup_logging()
+    for i, arg in enumerate(argv):
+        if arg == "--debug":
+            logging.info("Setting debug logging...")
+            logging.getLogger().setLevel(logging.DEBUG)
+        if arg in ["-C", "--config"]:
+            if len(argv) > i + 1:
+                print(f"Adding {argv[i + 1]} to config search path...")
+                CFG_DIRS.insert(0, argv[i + 1])
     logging.debug("Starting keymaer with DEBUG logging...")
     cfg = read_cfg()
     if not cfg:
