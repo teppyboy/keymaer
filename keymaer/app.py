@@ -70,6 +70,7 @@ def main():
             trigger_keys=fix_key_trigger(key["trigger"]),
             delay=delay,
             remove=key.get("remove", True),
+            press_delay=key.get("press_delay", None),
         ).start_map()
     print("Press Ctrl + C to exit program.")
     try:

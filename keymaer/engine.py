@@ -32,9 +32,11 @@ class KeyMap:
         self.target_key = target_key
         self.trigger_keys = trigger_keys
         self.delay = delay
+        self.press_delay = None
         if not press_delay:
-            press_delay = Delay(0.02, 0.03)
-        self.press_delay = press_delay
+            self._default_press_delay = Delay(0.02, 0.03)
+        else:
+            self.press_delay = Delay.from_dict(press_delay)
         self.remove = remove
         self._logger = logging.getLogger("KeyMap")
         self._thread = None
@@ -46,7 +48,7 @@ class KeyMap:
 
     def press_key(self, target_key: str):
         self._pressing = True
-        rnd_len = self.press_delay.random()
+        rnd_len = (self.press_delay or self._default_press_delay).random()
         self._logger.debug(f"Pressing {target_key} for {rnd_len} seconds")
         try:
             keyboard.press(target_key)
@@ -94,6 +96,9 @@ class KeyMap:
             if not inp_str:
                 return
             self._logger.debug("Pressing keys...")
+            if self.press_delay:
+                for key in inp_str:
+                    self.press_key(key)
             keyboard.write(inp_str, delay=0.005)
 
         # Focus

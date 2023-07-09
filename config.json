@@ -6,6 +6,10 @@
     "keys": [
         {
             "key": "input_box",
+            "press_delay": {
+                "min": 0.02,
+                "max": 0.05
+            },
             "trigger": [
                 "\\",
                 "\\"
