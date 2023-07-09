@@ -98,6 +98,7 @@ class KeyMap:
         # root.after_idle(focus_input_box)
         # Bind events
         root.bind("<FocusOut>", lambda _: root.destroy())
+        root.bind("<Escape>", lambda _: root.destroy())
         root.bind("<Return>", input_event)
         sleep(0.05)
         self._logger.debug("Showing input box...")
@@ -125,6 +126,8 @@ class KeyMap:
             daemon=True,
         ).start()
         if self._pressed_keys == self.trigger_keys:
+            if self._input_box_open:
+                return
             self._logger.debug("Clearing keys...")
             self._clear_timer_threads()
             self._pressed_keys.clear()

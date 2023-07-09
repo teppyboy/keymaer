@@ -2,6 +2,13 @@
 
 key ma<del>pp</del>er (because my keyboard has the 0, p, ;, / button broken)
 
+## Features
+
++ Key mapper (e.g. map `--` to `0`)
+
+Fun fact: You can even make an IME out of this, check out [vn-telex.json](misc/vn-telex.json)
+for a sample configuration.
+
 ## Installation
 
 Soon, for now you need to run from source (and with sudo in Linux)
