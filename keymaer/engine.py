@@ -99,6 +99,7 @@ class KeyMap:
             if self.press_delay:
                 for key in inp_str:
                     self.press_key(key)
+                return
             keyboard.write(inp_str, delay=0.005)
 
         # Focus
