@@ -48,9 +48,13 @@ class KeyMap:
         self._pressing = True
         rnd_len = self.press_delay.random()
         self._logger.debug(f"Pressing {target_key} for {rnd_len} seconds")
-        keyboard.press(target_key)
-        sleep(rnd_len)
-        keyboard.release(target_key)
+        try:
+            keyboard.press(target_key)
+            sleep(rnd_len)
+            keyboard.release(target_key)
+        except ValueError:
+            # Support typing unicode keys.
+            keyboard.write(target_key)
         self._pressing = False
 
     def _time_counter(self, key_name: str, address: str):
@@ -116,8 +120,8 @@ class KeyMap:
             return
         self._pressed_keys.append(key_name)
         self._logger.debug(
-            f"Pressed keys: {self._pressed_keys} | Trigger keys: {self.trigger_keys}"
-        )  # noqa: E501
+            f"Pressed: {self._pressed_keys} | Trigger: {self.trigger_keys} | Target: {self.target_key}"  # noqa: E501
+        )
         timer_address = str(random())
         self._timer_threads[timer_address] = 0
         Thread(
