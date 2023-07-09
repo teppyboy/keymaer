@@ -5,6 +5,13 @@
     },
     "keys": [
         {
+            "key": "input_box",
+            "trigger": [
+                "\\",
+                "\\"
+            ]
+        },
+        {
             "key": "0",
             "trigger": [
                 "−",
