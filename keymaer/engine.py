@@ -46,7 +46,7 @@ class KeyMap:
 
     def press_key(self, target_key: str):
         self._pressing = True
-        rnd_len = uniform(self.press_delay.min, self.press_delay.max)
+        rnd_len = self.press_delay.random()
         self._logger.debug(f"Pressing {target_key} for {rnd_len} seconds")
         keyboard.press(target_key)
         sleep(rnd_len)
@@ -97,7 +97,7 @@ class KeyMap:
         entry.focus_force()
         # root.after_idle(focus_input_box)
         # Bind events
-        # root.bind("<FocusOut>", lambda _: root.destroy())
+        root.bind("<FocusOut>", lambda _: root.destroy())
         root.bind("<Return>", input_event)
         sleep(0.05)
         self._logger.debug("Showing input box...")
