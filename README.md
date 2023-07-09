@@ -1,5 +1,7 @@
 # keymaer
 
+> Experimental branch using `pyjion` for JIT optimization, use at your own risk.
+
 key ma<del>pp</del>er (because my keyboard has the 0, p, ;, / button broken)
 
 ## Features
@@ -24,6 +26,8 @@ rather than using the self-implementation.
 
 Soon, for now you need to run from source (and with sudo in Linux)
 
+Requires Python 3.10.x
+
 ### From source
 
 #### Linux
@@ -40,7 +44,6 @@ sudo pip install --break-system-packages -U git+https://github.com/teppyboy/keym
 
 ```bash
 sudo curl -L -o /usr/local/bin/keymaer https://github.com/teppyboy/keymaer/raw/master/misc/keymaer 
-# PyPy: sudo curl -L -o /usr/local/bin/keymaer https://github.com/teppyboy/keymaer/raw/master/misc/keymaer-pypy
 sudo chmod +x /usr/local/bin/keymaer
 ```
 
