@@ -7,7 +7,7 @@ key ma<del>pp</del>er (because my keyboard has the 0, p, ;, / button broken)
 + Key mapper (e.g. map `--` to `0`)
 
 Fun fact: You can even make an IME out of this, check out [vn-telex.json](misc/vn-telex.json)
-for a sample configuration.
+for a sample configuration (Not really working due to the limited implementation)
 
 ## Installation
 
