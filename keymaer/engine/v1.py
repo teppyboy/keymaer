@@ -93,7 +93,8 @@ class KeyMap:
             self._logger.debug("Pressing keys...")
             if self.press_delay:
                 for key in inp_str:
-                    self.press_key(key)
+                    keyboard.write(key)
+                    sleep(self.press_delay.random())
                 return
             keyboard.write(inp_str, delay=0.005)
 
