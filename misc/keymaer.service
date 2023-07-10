@@ -1,6 +1,7 @@
 [Unit]
 Description=Keymaer key mapping tool
 Requires=multi-user.target
+After=graphical.target
 
 [Service]
 ExecStart=/usr/local/bin/keymaer
