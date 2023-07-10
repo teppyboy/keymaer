@@ -53,9 +53,15 @@ sudo curl -L -o /etc/keymaer/config.json https://github.com/teppyboy/keymaer/raw
 + systemd service (optional)
   
 ```bash
-sudo curl -L -o /etc/systemd/system/keymaer.service https://github.com/teppyboy/keymaer/raw/master/misc/keymaer.service
+# System
+sudo curl -L -o /etc/systemd/system/keymaer.service https://github.com/teppyboy/keymaer/raw/master/misc/keymaer-system.service
 # sudo systemctl daemon-reload
 # sudo systemctl enable --now keymaer
+
+# User (will not work in login screen)
+sudo curl -L -o /etc/systemd/user/keymaer.service https://github.com/teppyboy/keymaer/raw/master/misc/keymaer.service
+# systemctl --user daemon-reload
+# systemctl --user enable --now keymaer
 ```
 
 ## License

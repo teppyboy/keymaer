@@ -1,6 +1,5 @@
 [Unit]
-Description=Keymaer key mapping tool
-Requires=multi-user.target
+Description=Keymaer key mapping tool (Userspace)
 After=graphical.target
 
 [Service]
@@ -8,4 +7,4 @@ ExecStart=/usr/local/bin/keymaer
 Type=simple
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
