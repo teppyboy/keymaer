@@ -1,23 +1,12 @@
 import logging
+import platform
 from threading import Thread
 from time import sleep
-from random import uniform, random
+from random import random
 import keyboard
 import tkinter as tk
 from tkinter import ttk
-
-
-class Delay:
-    def __init__(self, min: float, max: float) -> None:
-        self.min = min
-        self.max = max
-
-    def random(self) -> float:
-        return uniform(self.min, self.max)
-
-    @staticmethod
-    def from_dict(delay_dict: dict) -> "Delay":
-        return Delay(delay_dict["min"], delay_dict["max"])
+from keymaer.engine.delay import Delay
 
 
 class KeyMap:
@@ -88,8 +77,9 @@ class KeyMap:
         entry = ttk.Entry(root)
         entry.pack()
         # Callbacks
-        def input_event(_):
-            inp_str = entry.get()
+        def input_event(inp_str: str = None):
+            if not isinstance(inp_str, str):
+                inp_str = entry.get()
             self._logger.debug(f"String in box: {inp_str}")
             self._logger.debug("Destroying window...")
             root.destroy()
@@ -102,16 +92,51 @@ class KeyMap:
                 return
             keyboard.write(inp_str, delay=0.005)
 
-        # Focus
-        root.focus_set()
-        entry.focus_force()
-        # root.after_idle(focus_input_box)
+        # Fixups
+        def focus_input_box():
+            self._logger.debug("Focusing input box...")
+            root.focus_set()
+            entry.focus_force()
+
+        def simulate_input():
+            # This method must be ran in a sepereated thread.
+            # Otherwise, it will block the main thread.
+            self._logger.debug("Init simulating input for Linux...")
+            inp_str = ""
+            while self._input_box_open:
+                if self.delay.min > 0:
+                    sleep(self.delay.min)
+                key = keyboard.read_event()
+                if key.event_type != "down":
+                    continue
+                self._logger.debug(f"Key pressed: {key.name}")
+                match key.name:
+                    case "enter":
+                        input_event(inp_str=inp_str)
+                        return
+                    case "esc":
+                        input_event()
+                        return
+                    case "backspace":
+                        inp_str = inp_str[:-1]
+                        entry.delete(len(entry.get()) - 1, tk.END)
+                        continue
+                    case "space":
+                        inp_str += " "
+                        entry.insert(len(entry.get()), " ")
+                        continue
+                entry.insert(len(entry.get()), key.name)
+                inp_str += key.name
         # Bind events
         root.bind("<FocusOut>", lambda _: root.destroy())
         root.bind("<Escape>", lambda _: root.destroy())
         root.bind("<Return>", input_event)
+        # Focus
         sleep(0.05)
         self._logger.debug("Showing input box...")
+        root.after(1, focus_input_box)
+        if platform.system() == "Linux":
+            root.after(50, simulate_input)
         root.mainloop()
         self._input_box_open = False
 
