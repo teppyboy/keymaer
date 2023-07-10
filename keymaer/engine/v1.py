@@ -77,6 +77,7 @@ class KeyMap:
         root.attributes("-topmost", True)
         entry = ttk.Entry(root)
         entry.pack()
+
         # Callbacks
         def input_event(inp_str: str = None):
             if not isinstance(inp_str, str):
@@ -86,6 +87,9 @@ class KeyMap:
             root.destroy()
             if not inp_str:
                 return
+            if platform.system() == "Linux":
+                # Wait for the window to close (because of window decorations)
+                sleep(0.05)
             self._logger.debug("Pressing keys...")
             if self.press_delay:
                 for key in inp_str:
