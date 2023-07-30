@@ -4,8 +4,12 @@ from threading import Thread
 from time import sleep
 from random import random
 import keyboard
-import tkinter as tk
-from tkinter import ttk
+try:
+    import tkinter as tk
+    from tkinter import ttk
+except ImportError:
+    tk = None
+    ttk = None
 from keymaer.engine.delay import Delay
 
 
@@ -28,6 +32,10 @@ class KeyMap:
             self.press_delay = Delay.from_dict(press_delay)
         self.remove = remove
         self._logger = logging.getLogger("KeyMap")
+        if not tk or not ttk:
+            self._logger.warning(
+                "Tkinter is not installed. Input box will not work."
+            )
         self._thread = None
         self._pressing = False
         self._input_box_open = False
@@ -66,11 +74,17 @@ class KeyMap:
             self._timer_threads[k] = 1
 
     def _show_input_box(self):
+        if not tk or not ttk:
+            return
         if self._input_box_open:
             return
         self._logger.debug("Inititalizing input box...")
         self._input_box_open = True
-        root = tk.Tk(className="keymaer")
+        try:
+            root = tk.Tk(className="keymaer")
+        except tk.TclError as e:
+            self._logger.warning(f"Could not create Tk window: {e}")
+            return
         if platform.system() != "Linux":
             root.overrideredirect(1)
         root.geometry("96x20+0+0")
