@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "keymaer"
-version = "0.2.0"
+version = "0.2.0-1"
 description = "Key mapper"
 authors = ["tretrauit <tretrauit@gmail.com>"]
 license = "MIT"
